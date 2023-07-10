@@ -63,7 +63,7 @@
     function playSound(e){
         const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
         const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
-        // console.log(audio );
+        // console.log(audio);
         if(!audio) return; //stops the function from running if keystroke doesnt correlate with an assigned audio keystroke. 
         audio.currentTime = 0; // rewinds to start of audio so you can repeatedly spam a key. 
         audio.play(); //using built in function to play sounds. 
