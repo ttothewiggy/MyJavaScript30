@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+  <!-- Create a canvas element with id 'draw' and set its dimensions to 800x800 pixels -->
+  <canvas id="draw" width="800" height="800"></canvas>
+  <script>
+    // Select the canvas element from the DOM and get its 2D rendering context
+    const canvas = document.querySelector('#draw');
+    const ctx = canvas.getContext('2d');
+
+    // Set the canvas dimensions to match the inner dimensions of the browser window
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Set initial configurations for the drawing
+    ctx.strokeStyle = '#BADASS';  // Set the stroke color to '#BADASS'
+    ctx.lineJoin = 'round';       // Set the line join type to 'round'
+    ctx.lineCap = 'round';        // Set the line cap type to 'round'
+    ctx.lineWidth = 25;           // Set the line width to 25 pixels
+    ctx.globalCompositeOperation = 'multiply'; // Set the global composite operation to 'multiply'
+
+    let isDrawing = false;  // Flag to indicate if the user is currently drawing
+    let lastX = 0;         // X-coordinate of the last point
+    let lastY = 0;         // Y-coordinate of the last point
+    let hue = 0;           // Initial hue value for stroke color
+    let direction = true;  // Flag to indicate whether the line width is increasing or decreasing
+
+    // Function to draw on the canvas when the mouse moves
+    function draw(e) {
+      if (!isDrawing) return; // If not drawing, exit the function
+
+      // Log the event object (mouse coordinates) for debugging purposes
+      console.log(e);
+
+      // Set the stroke color based on the current hue value and saturation and lightness set to 100%
+      ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+
+      // Start a new path
+      ctx.beginPath();
+      // Move the starting point of the path to the lastX and lastY coordinates
+      ctx.moveTo(lastX, lastY);
+      // Draw a line to the current mouse position (e.offsetX, e.offsetY)
+      ctx.lineTo(e.offsetX, e.offsetY);
+      // Stroke the path to display it on the canvas
+      ctx.stroke();
+
+      // Update lastX and lastY to the current mouse position for the next draw call
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+
+      // Increment the hue value for the next stroke color
+      hue++;
+
+      // Reset the hue value to 0 when it reaches 360 to avoid overflow
+      if (hue >= 360) {
+        hue = 0;
+      }
+
+      // Check if the line width is at its maximum (100) or minimum (1), and toggle the direction accordingly
+      if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+        direction = !direction;
+      }
+
+      // Increase or decrease the line width based on the direction
+      if (direction) {
+        ctx.lineWidth++;
+      } else {
+        ctx.lineWidth--;
+      }
+    }
+
+    // Event listener to handle when the mouse is pressed down on the canvas
+    canvas.addEventListener('mousedown', (e) => {
+      isDrawing = true; // Set isDrawing to true when the mouse is pressed
+      [lastX, lastY] = [e.offsetX, e.offsetY]; // Update lastX and lastY to the current mouse position
+    });
+
+    // Event listener to handle mouse movement on the canvas
+    canvas.addEventListener('mousemove', draw);
+
+    // Event listener to handle when the mouse is released from the canvas
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+
+    // Event listener to handle when the mouse leaves the canvas area
+    canvas.addEventListener('mouseout', () => isDrawing = false);
+  </script>
+
+  <!-- Apply some minimal styling to the HTML and body to remove margins -->
+  <style>
+    html, body {
+      margin: 0;
+    }
+  </style>
+</body>
+</html>
