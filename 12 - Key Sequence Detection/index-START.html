@@ -7,6 +7,38 @@
     <link rel="icon" href="https://fav.farm/🔥" />
   </head>
   <body>
-    <script></script>
+    <script>
+      // Create an array to store the recently pressed keys
+      const pressed = [];
+  
+      // Define the secret code that triggers the action (the sequence of keys to be pressed)
+      const secretCode = 'alex';
+  
+      // Add an event listener to the 'keyup' event on the window object
+      window.addEventListener('keyup', (e) => {
+          // Log the key that was just released (keyup event)
+          console.log(e.key);
+  
+          // Push the released key to the 'pressed' array
+          pressed.push(e.key);
+  
+          // Ensure the 'pressed' array doesn't grow larger than the length of the 'secretCode'
+          // By removing elements from the beginning of the 'pressed' array if it exceeds 'secretCode.length'
+          pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length);
+  
+          // Check if the current 'pressed' array contains the 'secretCode'
+          if (pressed.join('').includes(secretCode)) {
+              // If the 'secretCode' is found, log 'Winner' to the console
+              console.log('Winner');
+  
+              // Execute the 'cornify_add()' function, which presumably does something fun (e.g., adding unicorns to the page)
+              cornify_add();
+          }
+  
+          // Log the current state of the 'pressed' array (which holds the recently pressed keys)
+          console.log(pressed);
+      })
+  </script>
+  
   </body>
 </html>
